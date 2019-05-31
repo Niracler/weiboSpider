@@ -3,9 +3,12 @@
 
 import codecs
 import csv
+import json
 import os
 import random
 import re
+from importlib import reload
+
 import requests
 import sys
 import traceback
@@ -17,10 +20,14 @@ from tqdm import tqdm
 
 
 class Weibo:
-    cookie = {"Cookie": "your cookie"}  # 将your cookie替换成自己的cookie
-
     def __init__(self, user_id, filter=0):
         """Weibo类初始化"""
+        try:
+            with open('cookie.json') as f:
+                self.cookie = json.loads(f.read())
+        except:
+            self.cookie = ''
+
         self.user_id = user_id  # 用户id，即需要我们输入的数字，如昵称为“Dear-迪丽热巴”的id为1669879400
         self.filter = filter  # 取值范围为0、1，程序默认值为0，代表要爬取用户的全部微博，1代表只爬取用户的原创微博
         self.nickname = ''  # 用户昵称，如“Dear-迪丽热巴”
